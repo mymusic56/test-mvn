@@ -2,19 +2,39 @@ pipeline {
     agent none
     
     environment {
-        IMAGE = 'maven:3-alpine'
+        HOST = 'home.mytest.com@1'
+        MVN_IMAGE = 'maven:3-alpine'
+        SOURCE_FILE = 'test01/target/app.jar'
+        HOST_DEST_DIR = '/data/java-jar/test/test-mvn'
+        HOST_DEST_FILENAME = 'app.jar'
     }
     stages {
         stage('Build') {
             agent {         
                 docker {
-                    image "${IMAGE}"
+                    image "${MVN_IMAGE}"
                     args '-u root -v /root/.m2:/root/.m2'         
-                }     
+                }
             }
             steps {
-                sh 'mvn clean install'
+                sh 'mvn -B -DskipTests clean install package'
             }
+        }
+        
+        stage('Transfer') {
+            steps {
+                sh 'scp $SOURCE_FILE $HOST:${HOST_DEST_DIR}/${HOST_DEST_FILENAME}'
+            }
+        }
+        
+        stage('MakeImage') {
+            steps {
+                sh 'echo MakeImage FINISH'
+            }
+        }
+        
+        stage('Deploy') {
+            
         }
     }
 }
