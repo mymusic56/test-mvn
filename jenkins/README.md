@@ -1,3 +1,4 @@
+```
 pipeline {
     agent {
         docker {
@@ -28,3 +29,5 @@ pipeline {
         }
     }
 }
+
+```
