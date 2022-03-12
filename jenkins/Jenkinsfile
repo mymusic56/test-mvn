@@ -5,7 +5,10 @@ pipeline {
         HOST = 'home.mytest.com'
         HOST_IP = '192.168.102.128'
         MVN_IMAGE = 'maven:3-alpine'
+        MVN_WORK_DIR = '/usr/src/mymaven'
+        MVN_SETTING_PATH = '/usr/share/maven/ref/settings.xml'
         SOURCE_FILE = 'test01/target/app.jar'
+        PROJECT_DIR = '/data/var/jenkinsci_home/workspace/test-mvn'
         HOST_DEST_DIR = '/data/java-jar/test/test-mvn'
         HOST_DEST_FILENAME = 'app.jar'
         SSH_OS_IMAGE = 'roboxes/centos8:3.6.8'
@@ -15,7 +18,7 @@ pipeline {
             agent {         
                 docker {
                     image "${MVN_IMAGE}"
-                    args '-u root -v /root/.m2:/root/.m2 --add-host $HOST:$HOST_IP'         
+                    args '--add-host $HOST:$HOST_IP -u root -v /root/.m2:/root/.m2 -v /root/.m2/settings.xml:$MVN_SETTING_PATH'         
                 }
             }
             steps {
