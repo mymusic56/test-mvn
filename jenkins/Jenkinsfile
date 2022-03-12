@@ -7,8 +7,9 @@ pipeline {
         MVN_IMAGE = 'maven:3-alpine'
         MVN_WORK_DIR = '/usr/src/mymaven'
         MVN_SETTING_PATH = '/usr/share/maven/ref/settings.xml'
+        SOURCE_DIR = '/data/var/jenkinsci_home'
         SOURCE_FILE = '/data/var/jenkinsci_home/workspace/test-mvn/target/app.jar'
-        HOST_DEST_DIR = '/data/java-jar/test/test-mvn/'
+        HOST_DEST_DIR = '/data/java-jar/test/test-mvn'
         HOST_DEST_FILENAME = 'app.jar'
         SSH_OS_IMAGE = 'roboxes/centos8:3.6.8'
     }
@@ -29,7 +30,7 @@ pipeline {
             agent {
                 docker {
                     image "${SSH_OS_IMAGE}"
-                    args '-u root -v /root/.ssh:/root/.ssh -v $HOST_DEST_DIR:$HOST_DEST_DIR --add-host $HOST:$HOST_IP'
+                    args '-u root -v /root/.ssh:/root/.ssh -v $HOST_DEST_DIR:$HOST_DEST_DIR -v $SOURCE_DIR:$SOURCE_DIR --add-host $HOST:$HOST_IP'
                 }
             }
             steps {
