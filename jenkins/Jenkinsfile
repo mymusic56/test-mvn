@@ -47,8 +47,7 @@ pipeline {
             }
             steps {
                 sh 'export DATE=`date +%Y-%m-%d-%H-%M-%S` && \
-                    echo $DATE
-                '
+                    echo $DATE'
             }
         }
     }
