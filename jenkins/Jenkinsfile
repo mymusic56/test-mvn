@@ -2,7 +2,8 @@ pipeline {
     agent none
     
     environment {
-        HOST = 'home.mytest.com@1'
+        HOST = 'home.mytest.com'
+        HOST_IP = '192.168.102.128'
         MVN_IMAGE = 'maven:3-alpine'
         SOURCE_FILE = 'test01/target/app.jar'
         HOST_DEST_DIR = '/data/java-jar/test/test-mvn'
@@ -14,7 +15,7 @@ pipeline {
             agent {         
                 docker {
                     image "${MVN_IMAGE}"
-                    args '-u root -v /root/.m2:/root/.m2'         
+                    args '-u root -v /root/.m2:/root/.m2 --add-host $HOST:$HOST_IP'         
                 }
             }
             steps {
@@ -26,7 +27,7 @@ pipeline {
             agent {
                 docker {
                     image "${SSH_OS_IMAGE}"
-                    args '-u root -v /root/.ssh:/root/.ssh -v $HOST_DEST_DIR:$HOST_DEST_DIR'
+                    args '-u root -v /root/.ssh:/root/.ssh -v $HOST_DEST_DIR:$HOST_DEST_DIR --add-host $HOST:$HOST_IP'
                 }
             }
             steps {
@@ -44,7 +45,7 @@ pipeline {
             agent {
                 docker {
                     image "${SSH_OS_IMAGE}"
-                    args '-u root -v /root/.ssh:/root/.ssh'
+                    args '-u root -v /root/.ssh:/root/.ssh --add-host $HOST:$HOST_IP'
                 }
             }
             steps {
