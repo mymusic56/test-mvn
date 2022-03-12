@@ -7,6 +7,7 @@ pipeline {
         SOURCE_FILE = 'test01/target/app.jar'
         HOST_DEST_DIR = '/data/java-jar/test/test-mvn'
         HOST_DEST_FILENAME = 'app.jar'
+        SSH_OS_IMAGE = 'roboxes/centos8:3.6.8'
     }
     stages {
         stage('Build') {
@@ -22,6 +23,12 @@ pipeline {
         }
         
         stage('Transfer') {
+            agent {
+                docker {
+                    image "${SSH_OS_IMAGE}"
+                    args '-u root -v /root/.ssh:/root/.ssh -v $HOST_DEST_DIR:$HOST_DEST_DIR'
+                }
+            }
             steps {
                 sh 'scp $SOURCE_FILE $HOST:${HOST_DEST_DIR}/${HOST_DEST_FILENAME}'
             }
@@ -34,7 +41,15 @@ pipeline {
         }
         
         stage('Deploy') {
-            
+            agent {
+                image "${SSH_OS_IMAGE}"
+                args '-u root -v /root/.ssh:/root/.ssh'
+            }
+            steps {
+                sh 'export DATE=`date +%Y-%m-%d-%H-%M-%S` && \
+                    echo $DATE
+                '
+            }
         }
     }
 }
