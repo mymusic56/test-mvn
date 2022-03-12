@@ -7,7 +7,7 @@ pipeline {
         MVN_IMAGE = 'maven:3-alpine'
         MVN_WORK_DIR = '/usr/src/mymaven'
         MVN_SETTING_PATH = '/usr/share/maven/ref/settings.xml'
-        SOURCE_FILE = 'test-mvn/target/app.jar'
+        SOURCE_FILE = '/data/var/jenkinsci_home/workspace/test-mvn/target/app.jar'
         HOST_DEST_DIR = '/data/java-jar/test/test-mvn/'
         HOST_DEST_FILENAME = 'app.jar'
         SSH_OS_IMAGE = 'roboxes/centos8:3.6.8'
