@@ -38,12 +38,6 @@ pipeline {
             }
         }
         
-        stage('MakeImage') {
-            steps {
-                sh 'echo MakeImage FINISH'
-            }
-        }
-        
         stage('Deploy') {
             agent {
                 docker {
