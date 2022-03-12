@@ -42,8 +42,10 @@ pipeline {
         
         stage('Deploy') {
             agent {
-                image "${SSH_OS_IMAGE}"
-                args '-u root -v /root/.ssh:/root/.ssh'
+                docker {
+                    image "${SSH_OS_IMAGE}"
+                    args '-u root -v /root/.ssh:/root/.ssh'
+                }
             }
             steps {
                 sh 'export DATE=`date +%Y-%m-%d-%H-%M-%S` && \
